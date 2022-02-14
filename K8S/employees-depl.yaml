@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: employees-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: employeesservice
+  template:
+    metadata:
+      labels:
+        app: employeesservice
+    spec:
+      containers:
+        - name: employeesservice
+          image: karkanitsad/employeesservice:latest
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: employees-clusterip-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: employeesservice
+  ports:
+  - name: employeesservice
+    protocol: TCP
+    port: 80
+    targetPort: 80
